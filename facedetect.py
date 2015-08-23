@@ -18,7 +18,7 @@ def detect(img, cascade):
 def draw_rects(img, rects, color):
     for x1, y1, x2, y2 in rects:
         cv2.rectangle(img, (x1, y1), (x2, y2), color, 2)
-        winsound.Beep(32767,5)
+        
 
 def draw_recteye(img, rects, color):
     for x1, y1, x2, y2 in rects:
