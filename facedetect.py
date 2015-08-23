@@ -1,13 +1,12 @@
 import numpy as np
 import cv2
 import winsound
+import time
 
 from video import create_capture
 from common import clock, draw_str
 
-help_message = '''
-USAGE: facedetect.py [--cascade <cascade_fn>] [--nested-cascade <cascade_fn>] [<video_source>]
-'''
+
 
 def detect(img, cascade):
     rects = cascade.detectMultiScale(img, scaleFactor=1.3, minNeighbors=4, minSize=(30, 30), flags = cv2.CASCADE_SCALE_IMAGE)
@@ -19,10 +18,20 @@ def detect(img, cascade):
 def draw_rects(img, rects, color):
     for x1, y1, x2, y2 in rects:
         cv2.rectangle(img, (x1, y1), (x2, y2), color, 2)
+        winsound.Beep(32767,5)
+
+def draw_recteye(img, rects, color):
+    for x1, y1, x2, y2 in rects:
+        cv2.rectangle(img, (x1, y1), (x2, y2), color, 2)
+        draw_str(vis, (250, 250), 'Your doing good')
+        winsound.Beep(32767,5)
+        print "eye detect"
+
+
 
 if __name__ == '__main__':
     import sys, getopt
-    print help_message
+    
 
     args, video_src = getopt.getopt(sys.argv[1:], '', ['cascade=', 'nested-cascade='])
     try:
@@ -52,18 +61,16 @@ if __name__ == '__main__':
                 roi = gray[y1:y2, x1:x2]
                 vis_roi = vis[y1:y2, x1:x2]
                 subrects = detect(roi.copy(), nested)
-                draw_rects(vis_roi, subrects, (255, 0, 0))
+                if(draw_recteye(vis_roi, subrects, (255, 0, 0)) >0 ):
+                    print "true"
 
-        else:
-            winsound.Beep(500,1000)
-            print "here"
-            draw_str(vis, (20, 20), 'SLEEP: %.1f ms' % (dt*1000))
-            
+                    
         dt = clock() - t
-        draw_str(vis, (20, 20), 'monitoring: %.1f ms' % (dt*1000))
+        draw_str(vis, (250, 100),'monitoring active')
+        print "eye fail"
         cv2.imshow('facedetect', vis)
-        
-
+        winsound.Beep(32767,30)        
+     
         if 0xFF & cv2.waitKey(5) == 27:
             break
     
