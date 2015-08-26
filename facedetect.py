@@ -1,3 +1,4 @@
+#stay awake 
 import numpy as np
 import cv2
 import winsound
