@@ -20,7 +20,7 @@ def draw_rects(img, rects, color):
         cv2.rectangle(img, (x1, y1), (x2, y2), color, 2)
         
 
-def draw_recteye(img, rects, color):
+def draw_rect_eye_detect(img, rects, color):
     for x1, y1, x2, y2 in rects:
         cv2.rectangle(img, (x1, y1), (x2, y2), color, 2)
         draw_str(vis, (250, 250), 'Your doing good')
@@ -61,7 +61,7 @@ if __name__ == '__main__':
                 roi = gray[y1:y2, x1:x2]
                 vis_roi = vis[y1:y2, x1:x2]
                 subrects = detect(roi.copy(), nested)
-                if(draw_recteye(vis_roi, subrects, (255, 0, 0)) >0 ):
+                if(draw_rect_eye_detect(vis_roi, subrects, (255, 0, 0)) >0 ):
                     print "true"
 
                     
